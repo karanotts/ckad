@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-volumes
+data:
+  db.config: |-
+    DB_URL: postgresql://mydb:5432
+    DB_USER: postgresuser
+    DB_ENV: staging
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-cm-vols
+spec:
+  containers:
+  - name: pod-with-cm-vols
+    image: nginx
+    volumeMounts:
+    - name: db-config
+      mountPath: /etc/config
+  volumes:
+  - name: db-config
+    configMap:
+      name: cm-volumes

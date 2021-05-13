@@ -1,0 +1,22 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: db-config
+data:
+  DB_URL: postgresql://mydb:5432
+  DB_USER: postgresuser
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-cm
+spec:
+  containers:
+  - name: pod-with-cm
+    image: busybox
+    command: [ "/bin/sh", "-c", "echo $(DB_USER)" ]
+    envFrom:
+    - configMapRef:
+        name: db-config
+  restartPolicy: Never
