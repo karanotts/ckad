@@ -94,3 +94,17 @@ DB_URL: postgresql://mydb:5432
 DB_USER: postgresuser
 DB_ENV: staging
 ```
+
+```
+$ kubectl create -f pod_cm_demo.yaml
+configmap/game-demo-config created
+pod/game-demo-pod created
+
+$ kubectl exec game-demo-pod -- ls /etc/config/game.envs
+max_lives=3
+secret.code.allowed=true
+secret.code.lives=30
+
+$ kubectl exec game-damo-pod -- env | grep PLAYER_LIVES
+PLAYER_LIVES=2
+```
