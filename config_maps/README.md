@@ -8,6 +8,11 @@ Config maps store a set of key-value pairs, compeletely decoupled from a POD lif
 
 ## Creating ConfigMaps imperatively
 
+``` kubectl create configmap <config-name> --from-literal=<key>=<value>```
+
+``` kubectl create configmap <config-name> --from-file=<path-to-file>```
+
+
 ```
 $ kubectl create configmap db-config --from-literal=environment=staging
 
@@ -75,6 +80,14 @@ metadata:
 
 ## Creating ConfigMaps declaratively
 
+```
+apiVersion: v1
+kind: ConfigMap
+metadata: 
+  name: my-config
+data:
+  my_key: my_value
+```
 ``` 
 $ kubectl create -f pod_with_cm.yaml
 configmap/db-config created
@@ -107,4 +120,40 @@ secret.code.lives=30
 
 $ kubectl exec game-damo-pod -- env | grep PLAYER_LIVES
 PLAYER_LIVES=2
+```
+
+## Injecting config-map data
+
+<li>All environmental variables:
+
+```
+  envFrom:
+    - configMapRef:
+      name: <config-name>
+```
+
+<li>Single environmental variable:
+
+```
+  env:
+    - name: MY_ENV
+      valueFrom:
+        configMapKeyRef:
+          name: <config-name>
+          key: <key>
+```
+
+<li> Mount config map as a volume:
+
+```
+  containers:
+  - name: nginx
+    image: nginx
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/config
+  volumes:
+  - name: config-volume
+    configMap:
+      name: db-config
 ```
