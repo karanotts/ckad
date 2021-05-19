@@ -67,3 +67,16 @@ drwxr-xr-x    3 root     root          4096 May 14 10:27 ..
 -rw-r--r--    1 1000     2000            29 May 14 10:31 date.log
 -rw-r--r--    1 4000     2000            29 May 14 10:32 date.txt
 ```
+
+## Capabilities
+
+Linux capabilities allow granting certain privileges to a process without granting all the privileges of the root user.
+Capabilities apply within a container ```securityContext``` section:
+```  
+containers:
+  - name: sec-ctx-4
+    image: gcr.io/google-samples/node-hello:1.0
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN", "SYS_TIME"]
+```

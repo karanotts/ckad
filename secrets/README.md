@@ -48,6 +48,20 @@ Type:  Opaque
 Data
 ====
 db_password:  8 bytes
+
+$ kubectl get secret db-secrets -o yaml
+apiVersion: v1
+data:
+  db_admin_user: c2VjcmV0X2FkbWlu
+  db_password: UGEkJHcwcmQ=
+kind: Secret
+metadata:
+  name: db-secrets
+  namespace: default
+type: Opaque
+
+$ echo -n UGEkJHcwcmQ= | base64 --decode
+Pa$$w0rd
 ```
 
 ! After creating the object, file `secret.yaml` should be deleted, as it contains sensitive data!
@@ -88,4 +102,35 @@ db_password=Pa$$w0rd
 echo -n "n3wPa$$w0rd" | base64
 $ kubectl edit secrets db-password
 secret/db-password edited
+```
+
+## Injecting secrets into pods
+<li> All environmental variables:
+
+```
+    envFrom:
+      - secretRef:
+        name: secret-name
+```
+
+<li> As a single environmental variable:
+
+```
+    env:
+      - name: MY_VAR
+        valueFrom:
+          secretKeyRef:
+            name: secret-name
+            key: key-name
+```
+
+<li> Mounted as volument:
+```
+    containers:
+      volumeMounts:
+        name: secrets
+        mountPath: /etc/secrets
+    volumes:
+    - name: secrets
+      secret: secret-name
 ```

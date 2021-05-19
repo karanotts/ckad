@@ -75,4 +75,13 @@ Labels are key-value pairs that can be attached to kubernetes objects and can be
     NAME     READY   STATUS             RESTARTS   AGE     LABELS
     nginx    1/1     Running            0          107m    region=uk_south,run=nginx
     webapp   1/1     Running            0          6m22s   environment=stg,region=fr_south
+
+    kubectl get pods -l env=prod,bu=finance,tier=frontend
+    NAME          READY   STATUS    RESTARTS   AGE
+    app-1-zzxdf   1/1     Running   0          6m16s   bu=finance,env=prod,tier=frontend
+```
+
+## Selectors
+```
+    kubectl get all --selector env=dev
 ```
