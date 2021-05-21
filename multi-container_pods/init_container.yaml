@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: business-app
+spec:
+  initContainers:
+  - name: configurer
+    image: busybox
+    command: ['sh', '-c', 'echo Initialising Application... \
+              && mkdir -p /usr/shared/app \
+              && echo -e {\"host\": $HOSTNAME} > /usr/shared/app/config.json']
+    volumeMounts:
+    - name: config
+      mountPath: /usr/shared/app
+  containers:
+  - name: webapp
+    image: nginx
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: config
+      mountPath: /usr/shared/app
+  volumes:
+  - name: config
+    emptyDir: {}
