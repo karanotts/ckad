@@ -85,3 +85,41 @@ Labels are key-value pairs that can be attached to kubernetes objects and can be
 ```
     kubectl get all --selector env=dev
 ```
+
+## Node selector
+
+```
+    kubectl get nodes
+    NAME                           STATUS   ROLES                  AGE   VERSION
+    131c.mylabserver.com   Ready    control-plane,master   24d   v1.20.1
+    361c.mylabserver.com   Ready    <none>                 24d   v1.20.1
+    881c.mylabserver.com   Ready    <none>                 24d   v1.20.1
+
+    kubectl label 361c.mylabserver.com size=large
+    node/361c.mylabserver.com labeled
+```
+```
+    apiVersion: v1
+    kind: Pod
+    metadata:
+      name: webapp-pod
+    spec:
+      nodeSelector:
+        size: large
+      containers:
+      - name: webapp-pod
+        image: nginx
+```
+```
+    kubectl get pod webapp-pod -o wide
+    NAME         READY   STATUS    RESTARTS   AGE   IP                NODE                           NOMINATED NODE   READINESS GATES
+    webapp-pod   1/1     Running   0          33s   192.168.231.166   361c.mylabserver.com   <none>           <none>
+
+    kubectl get pod webapp-pod -o yaml | grep -C 2 nodeSelector:
+    ---
+    enableServiceLinks: true
+    nodeName: d04862c2361c.mylabserver.com
+    nodeSelector:
+        size: large
+    preemptionPolicy: PreemptLowerPriority
+```

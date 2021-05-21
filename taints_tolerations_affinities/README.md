@@ -87,5 +87,38 @@ spec:
     mosquito   0/1     Pending   0          12m   <none>       <none>   <none>           <none>
 ```
 
-## Affinities 
-Node affinities attract pods to a set of nodes
+## Node Affinity
+Node affinities attract pods to a set of nodes.
+
+```requiredDuringSchedulingIgnoredDuringExecution``` - "hard" affinity, rules <strong>must</strong> be met for a pod to be scheduled on the node. If the matching label doesn't exist on the node, pod will <strong>not</strong> be scheduled.
+
+```preferredDuringSchedulingIgnoredDuringExecution``` - "soft" affinity, pod is preffered to be scheduled on the node, but not guaranteed. If the matching label doesn't exist on the node, affinity will be ignored and pod will be randomly scheduled on any available node.
+
+In both "hard" and "soft" affinity, ```IgnoredDuringExecution``` means that already running pods will ignore any changed to node affinity. 
+
+<br>
+
+Code examples: 
+```
+  kubectl label node 361c.mylabserver.com size=large
+```
+```
+  spec:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: size
+              values:
+              - large
+              operator: In
+```
+```
+    kubectl create -f affinity.yaml 
+    pod/my-webapp created
+
+    kubectl get pod my-webapp -o wide
+    NAME        READY   STATUS    RESTARTS   AGE    IP                NODE                           NOMINATED NODE   READINESS GATES
+    my-webapp   1/1     Running   0          3m4s   192.168.231.163   361c.mylabserver.com   <none>           <none>
+```
