@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: log-claim
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 200Mi
+  storageClassName: manual
+controlplane $ cat pod.yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  name: logger
+spec:
+  containers:
+  - name: logger
+    image: nginx:alpine
+    volumeMounts:
+    - name: mount
+      mountPath: "/var/www/nginx"
+  volumes:
+    - name: mount
+      persistentVolumeClaim:
+        claimName: log-claim
