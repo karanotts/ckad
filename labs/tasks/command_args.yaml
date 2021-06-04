@@ -1,0 +1,19 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: demo-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: demo-pod
+    image: busybox
+    command: ["printenv"]
+    args: ["MY_VAR", "HOSTNAME", "NODE_NAME"]
+    env:
+    - name: MY_VAR
+      value: "This is my env!"
+    - name: NODE_NAME
+      valueFrom:
+        fieldRef:
+          fieldPath: spec.nodeName
