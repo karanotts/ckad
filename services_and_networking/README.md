@@ -25,7 +25,7 @@ spec:
 ```
 ```spec.type``` - service type:
     <li>```ClusterIp``` - the service is exposed <strong>internally</strong> within the cluster using internal IP or cluster DNS
-    <li>```NodePort``` - the service is exposed <strong>externally</strong> via node port 
+    <li>```NodePort``` - the service is exposed <strong>externally</strong> via node port ```<NodeIP>:<NodePort>```
     <li>```LoadBalancer``` - used specifically on cloud clusters, to expose service via cloud platform load balancer
     <li>```ExternalName``` - maps the service to extrernal address to allow resources to access other resources outside the cluster
 

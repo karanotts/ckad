@@ -8,6 +8,10 @@ A pod can <i>claim</i> Persistent Volume using <strong>Persistent Volume Claim</
 
 <hr>
 
+## kubectl 
+
+```kubectl get pv --sort-by=.spec.capacity.storage```
+
 ## Volumes
 
 Pods running in a container can use temporary filesystem to read and write files. If container restarts, this data is lost. This temporary filesystem can be used to ie. share log files between main app pod and sidecar pod.
