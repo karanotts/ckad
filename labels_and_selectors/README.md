@@ -123,3 +123,23 @@ Labels are key-value pairs that can be attached to kubernetes objects and can be
         size: large
     preemptionPolicy: PreemptLowerPriority
 ```
+
+## kubectl 
+
+### label resource:
+```kubectl label pod <pod-name> ver=1```
+
+### show by label and key: 
+```kubectl get pod -L ver```
+
+### show by label and key=value:
+```kubectl get pod -L ver=v1```
+
+### remove label:
+```kubectl label pod <pod-name> ver-```
+
+### annotate resource:
+```kubectl annotate pod <pod-name> support="Call helpdesk on 12345..."```
+
+### remove annotation:
+```kubectl annotate pod <pod-name> support-```

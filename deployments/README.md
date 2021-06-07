@@ -150,6 +150,12 @@ Check particular revision:
     nginx:
         Image:      nginx:1.20.0
 ```
+Pause rollout:
+```kubectl rollout pause deployment <deployment name>```
+
+Resume rollout:
+```kubectl rollout resume deployment <deployment name>```
+
 
 ## Rollbacks
 Rollouts can be undone if necessary with <strong>rollbacks</strong> - ```rollout undo```
@@ -222,4 +228,21 @@ Both ```maxUnavailable``` and ```maxSurge``` can be set as a numeric value (ie. 
       Normal  ScalingReplicaSet  3m54s (x3 over 3h27m)  deployment-controller  Scaled up replica set webserver-56f648d5d4 to 2
       Normal  ScalingReplicaSet  3m54s (x3 over 3h27m)  deployment-controller  Scaled down replica set webserver-55df995c99 to 2
       Normal  ScalingReplicaSet  3m50s (x7 over 3h20m)  deployment-controller  (combined from similar events): Scaled down replica set webserver-55df995c99 to 0
-```k
+```
+
+## Autoscaling a deployment
+
+### Horizontal Pod Autoscaler (HPA)
+- scales the number of replicas based on cpu and memory thresholds
+
+```kubectl autoscale deployment <deploy-name> --cpu-percent=80 --min=5 --max=10```
+
+```kubectl get hpa```
+```
+NAME    REFERENCE          TARGETS         MINPODS   MAXPODS   REPLICAS   AGE
+nginx   Deployment/nginx   <unknown>/80%   5         10        5          23s
+```
+
+### Vertical Pod Autoscaler (VPA)
+- scales the cpu and memory allocation basing on usage metrics
+
