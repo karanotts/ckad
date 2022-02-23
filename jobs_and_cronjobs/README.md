@@ -1,7 +1,7 @@
 # Jobs and Cronjobs
 
 ## Jobs 
-Jobs are meant to performa a task and finish. Jobs are disposable pods, that instead of running indefinitely will execute a task and finish, entering ```Completed``` status.
+Jobs are meant to perform a task and finish. Jobs are disposable pods, that instead of running indefinitely will execute a task and finish, entering ```Completed``` status.
 
 ``` kubectl get jobs ```
 
@@ -22,9 +22,9 @@ Jobs are meant to performa a task and finish. Jobs are disposable pods, that ins
           restartPolicy: Never
       backoffLimit: 4
 ```
-```backoffLimit``` specifies how many times job should be retried before considering as failed
+```backoffLimit``` specifies how many times job should be retried before considered as failed
 
-```completion``` allows to specify how many pods should a successfully run a job before it's considered completed
+```completion``` allows to specify how many pods should successfully run a job before it's considered completed
 
 ```parallelism``` allows to specify how many pods are created at once (in parallel)
 
